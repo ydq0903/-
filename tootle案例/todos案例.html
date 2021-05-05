@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>React App</title>
+
+    <link rel="stylesheet" href="index.css" />
+</head>
+
+<body>
+    <div id="root">
+        <div class="todo-container">
+            <div class="todo-wrap">
+                <div class="todo-header">
+                    <input type="text" placeholder="请输入你的任务名称，按回车键确认" />
+                </div>
+                <ul class="todo-main">
+                    <li>
+                        <label>
+                            <input type="checkbox" />
+                            <span>xxxxx</span>
+                        </label>
+                        <button class="btn btn-danger">删除</button>
+                    </li>
+                    <li>
+                        <label>
+                            <input type="checkbox" />
+                            <span>yyyy</span>
+                        </label>
+                        <button class="btn btn-danger">删除</button>
+                    </li>
+                </ul>
+                <div class="todo-footer">
+                    <label>
+                        <input type="checkbox" />
+                    </label>
+                    <span> <span>已完成<i id="i1">0</i></span> / 全部<i id="i2">2</i> </span>
+                    <button class="btn btn-danger">清除已完成任务</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        //1.模拟动态数据
+        var date = [
+            {
+                id: 1,
+                dotoName: "易大庆",
+                isDone: true
+            },
+            {
+                id: 2,
+                dotoName: "迪丽热巴",
+                isDone: true
+            },
+            {
+                id: 3,
+                dotoName: "古力娜扎",
+                isDone: false
+            }
+        ]
+
+        //1.将动态数据渲染到页面中   
+        //1.获取ul元素，等会给ul元素动态添加子标签li标签
+        let oUl = document.querySelector(".todo-main")
+        //镜像数组map使用，方便将动态数据date按一定形式存入新数组中
+        //ES6写法，箭头函数的运用
+        let arr = date.map((item, index) => {
+            if (item.isDone == true) {
+                //模板字符串拼接
+                let str = `
+                         <li>
+                             <label>
+                                <input type="checkbox" checked/>
+                                <span class="Class">${item.dotoName}</span>
+                             </label>
+                            <button class="btn btn-danger">删除</button>
+                        </li>
+                         `
+                return str
+            } else {
+                let str = `
+                         <li>
+                             <label>
+                                <input type="checkbox" />
+                                <span>${item.dotoName}</span>
+                             </label>
+                            <button class="btn btn-danger">删除</button>
+                        </li>
+                         `
+                return str
+            }
+        })
+        //此时arr数组中已经有了li格式的字符串，将数组转换为字符串，然后插入ul的子节点
+        let strArr = arr.join("")
+        oUl.innerHTML = strArr
+        //动态显示i的数据
+        spanI()
+
+        //2.实现输入框按下回车则将数据插入ul
+        //1.获取输入框元素
+        let oIpt = document.querySelector('.todo-header input')
+        //添加键盘按下事件ES6写法
+        oIpt.onkeyup = (e) => {
+            //判断键盘按下的是否是回车键：回车键码是13
+            if (e.keyCode == 13) {
+                //获取input框中的值(去除前后空格后的)
+                let valIpt = oIpt.value.trim()
+                //输入值不能为空（判空）
+                if (valIpt == "") {
+                    return
+                } else {
+                    //值存在的情况，将数据插入模板字符串，然后插入li中
+                    let str = `
+                             <label>
+                                <input type="checkbox" />
+                                <span>${valIpt}</span>
+                             </label>
+                            <button class="btn btn-danger">删除</button>
+                         `
+                    //模板字符串插入li
+                    var Li = document.createElement("li")
+                    Li.innerHTML = str
+                    //把li添加到ul中
+                    oUl.appendChild(Li)
+                    //清空输入框内容（主体功能完善后的美化）
+                    oIpt.value = ""
+                    //添加容错：全选时候改变全选框的状态
+                    isAllcheck()
+                    //动态显示i的数据
+                    spanI()
+                }
+            }
+        }
+
+        //3.实现点击复选框，从而改变字体的样式(事件委托比较好)
+        //给父元素ul添加点击事件
+        oUl.onclick = (e) => {
+            //当点击的是ul中的input复选框时判断复选框的状态，然后动态改变兄弟节点span的样式
+            if (e.target.nodeName.toLowerCase() == "input") {
+                //e.target.checked---判断复选框是否被点击，点击就会有这个属性
+                if (e.target.checked) {
+                    e.target.nextElementSibling.classList.add("Class")
+                } else {
+                    e.target.nextElementSibling.classList.remove("Class")
+                }
+                //添加容错：全选时候改变全选框的状态
+                isAllcheck()
+                //动态显示i的数据
+                spanI()
+            }
+            //当点击的是删除按钮把对应的li删除
+            if (e.target.nodeName.toLowerCase() == "button") {
+                e.target.parentElement.remove()
+                //添加容错：全选时候改变全选框的状态
+                isAllcheck()
+                //动态显示i的数据
+                spanI()
+            }
+        }
+
+        //4.实现点击全选框，改变其他复选框的状态
+        //获取全选框元素
+        let allIpt = document.querySelector(".todo-footer input")
+        allIpt.onclick = () => {
+            //判断全选按钮的状态
+            if (allIpt.checked) {
+                //当全选按钮被激活时候让其他复选框被激活同时改变span样式
+                let oIpt = document.querySelectorAll(".todo-main input")
+                oIpt.forEach((item, index) => {
+                    item.checked = true
+                    item.nextElementSibling.classList.add("Class")
+                })
+            } else {
+                let oIpt = document.querySelectorAll(".todo-main input")
+                oIpt.forEach((item, index) => {
+                    item.checked = false
+                    item.nextElementSibling.classList.remove("Class")
+                })
+            }
+            //动态显示i的数据
+            spanI()
+        }
+
+        //5.封装函数，动态改变复选框和全选框的关系
+        function isAllcheck() {
+            //判断点击的复选框是否等于全部复选框的长度
+            let oAllIpt = document.querySelectorAll(".todo-main input").length
+            let ocheckIpt = document.querySelectorAll(".Class").length
+
+            if (oAllIpt == ocheckIpt) {
+                allIpt.checked = true
+            } else {
+                allIpt.checked = false
+            }
+
+        }
+
+        //6.封装函数，动态改变i标签的显示数据
+        function spanI() {
+            //获取两个i标签元素:已完成：i1，全部：i2
+            let oI1 = document.querySelector("#i1")
+            let oI2 = document.querySelector("#i2")
+            //获取已完成的复选框的个数和全部复选框的个数
+            let oipt = document.querySelectorAll(".Class").length
+            let oAllIpt = document.querySelectorAll(".todo-main input").length
+            //赋值
+            oI1.innerHTML = oipt
+            oI2.innerHTML = oAllIpt
+        }
+
+        //7.点击清除所有已完成任务按钮，清除已完成的任务
+        //1.获取清除按钮元素
+        let oBtn = document.querySelector(".todo-footer button")
+        oBtn.onclick = () => {
+            //获取所有已完成的任务元素
+            let oipt = document.querySelectorAll(".Class")
+            //把完成任务的父级li删掉即可
+            oipt.forEach((item) => {
+                item.parentElement.parentElement.remove()
+            })
+            //动态显示i的数据
+            spanI()
+        }
+    
+    
+    </script>
+</body>
+
+</html>
