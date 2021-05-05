@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <script>
+        //第一种，用indexof和foreach来做
+        var arr = [1, 22, 5, 6, 77, 1, 22, 5, 6, 77]
+
+        /*   var arr01=[]
+          var count=0
+          arr.forEach(function(item,index){
+              if(arr01.indexOf(item)==-1){
+                  arr01.push(item)
+                  count++
+              }
+          })
+          console.log(arr01); */
+
+        //第二种：双重循环遍历解决
+        /*      function s(arr) {
+                 for (var i = 0; i < arr.length; i++) {
+                     //第二层for 用于控制与第一层比较的元素
+                     for (var j = i + 1; j < arr.length; j++) {
+                         //如果相等
+                         if (arr[i] == arr[j]) {
+                             //删除后面的 即第 j个位置上的元素  删除个数 1 个
+                             arr.splice(j, 1);
+                         }
+                     }
+                 }
+                 return arr;
+             }
+             var arr02 = s(arr)
+             console.log(arr02); */
+
+        //第三种：对象思想:根据属性和值来进行判断
+        /*  var obj={}
+         var arr02=[]
+         for(var i=0;i<arr.length;i++){
+             if(obj[arr[i]]==undefined){
+                 arr02.push(arr[i])
+                 obj[arr[i]]=1
+             }
+         }
+         console.log(arr02); */
+
+        //第四种：设置值，相等就跳过
+       /*  var arr02 = []
+        for (var i = 0; i < arr.length; i++) {
+            for (var j = i + 1; j < arr.length; j++) {
+                if (arr[i]==arr[j]) {
+                    arr[j] = 0
+                }
+            }
+            if (arr[i] == 0) {
+                continue;
+            }
+            else {
+                arr02.push(arr[i])
+            }
+        }
+        console.log(arr02);
+ */
+
+    </script>
+</body>
+
+</html>
