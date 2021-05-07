@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        #outer {
+            width: 700px;
+            margin: 50px auto;
+            border: 1px solid #000;
+            overflow: hidden;
+        }
+
+        #con1 {
+            width: 300px;
+            height: 400px;
+            float: left;
+            background-color: #4c71ff;
+        }
+
+        f #con2 {
+            width: 300px;
+            height: 400px;
+            float: right;
+            background-color: #4c71ff;
+        }
+
+        #controls {
+            width: 100px;
+            height: 400px;
+            float: left;
+            background-color: #2ba5eb;
+            text-align: center;
+        }
+
+        #con1 .red,
+        #con2 .red {
+            background-color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="outer">
+        <ul id="con1">
+            <li>我是con1的内容1</li>
+            <li>我是con1的内容2</li>
+            <li>我是con1的内容3</li>
+            <li>我是con1的内容4</li>
+        </ul>
+        <div id="controls">
+            <button id="right">&gt;&gt;&gt;&gt;&gt;&gt;</button>
+            <button id="left">&lt;&lt;&lt;&lt;&lt;&lt;</button>
+        </div>
+        <ul id="con2">
+            <li>我是con2的内容1</li>
+            <li>我是con2的内容2</li>
+            <li>我是con2的内容3</li>
+            <li>我是con2的内容4</li>
+        </ul>
+    </div>
+    <script>
+        //需求：实现点击按钮将选中元素转移,选中元素则会变色
+        //1.实现选中的元素变色,事件委托比较好
+        let oU1 = document.querySelector("#con1")
+        let oU2 = document.querySelector("#con2")
+        oU1.onclick = (e) => {
+            if (e.target.nodeName.toLowerCase() == "li") {
+                //让指定的li元素变色,并设置上自定义属性
+                e.target.style.backgroundColor = "red"
+                e.target.dataset.click = true
+            }
+        }
+        oU2.onclick = (e) => {
+            if (e.target.nodeName.toLowerCase() == "li") {
+                //让指定的li元素变色,并设置上自定义属性
+                e.target.style.backgroundColor = "red"
+                e.target.dataset.click = true
+            }
+        }
+        //2.点击按钮，实现选中元素转移
+        let oRight = document.querySelector("#right")
+        let oLeft = document.querySelector("#left")
+
+        oRight.onclick=()=>{
+            let oLi01=document.querySelectorAll("#con1 li")
+            //带有属性的左li变量选出有属性的放入右ul中
+            oLi01.forEach((item,index)=>{
+                if (item.dataset.click) {
+                    oU2.appendChild(item)
+                    delete item.dataset.click
+                    item.style.backgroundColor="transparent"
+                }
+            })
+        }
+
+        oLeft.onclick=()=>{
+            let oLi02=document.querySelectorAll("#con2 li")
+            //带有属性的左li变量选出有属性的放入右ul中
+            oLi02.forEach((item,index)=>{
+                if (item.dataset.click) {
+                    oU1.appendChild(item)
+                    delete item.dataset.click
+                    item.style.backgroundColor="transparent"
+                }
+            })
+        }
+
+    </script>
+</body>
+
+</html>

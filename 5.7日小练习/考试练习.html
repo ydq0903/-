@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        //数组去重
+        var arr = [1, 2, 2, 3, 3]
+        //方法一：Set构造函数用于去重,返回的是一个迭代器，但是可以通过降维变成数组
+      /*   let arr01=new Set(arr)
+        let arr02=[...arr01]
+        console.log(arr02); */
+       //方法二indexof:查找指定元素并返回下标
+   /*     let arr02=[]
+       arr.forEach((item,index)=>{
+           //如果arr02数组中没有此元素则返回-1，就在arr02数组内添加，如果有就
+           if (arr02.indexOf(item)==-1) {
+               arr02.push(item)
+           }
+       })
+       console.log(arr02); */
+       //方法三:双重for循环:用splic（a,b,c）--a代表起始位置，b代表删除个数，c代表插入元素，不需要插入可以不写
+       //slice（a,b）---a是起始位置，b是终止位置，左闭右开
+      /*  for(let i=0;i<arr.length;i++){
+           for(let j=i+1;j<=arr.length;j++){
+               if (arr[i]==arr[j]) {
+                   arr.splice(j,1)
+               }
+           }
+       }
+       console.log(arr); */
+       
+    </script>
+</body>
+</html>
